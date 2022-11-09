@@ -11,6 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//autofac, ninject, castlewindsor,structermap,lightýnject,dryýnject -->Ioc Container
+//autofac -->AOP Bir metodun önünde sonunda kod yönetimini saðlar sunuyor
 builder.Services.AddSingleton<IProductService,ProductManager>(); //arka planda referans oluþtur
 builder.Services.AddSingleton<IProductDal,EfProductDal>(); //arka planda referans oluþtur
 
