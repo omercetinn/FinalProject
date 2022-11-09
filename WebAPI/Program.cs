@@ -1,11 +1,18 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Business.Abstract;
 using Business.Concrete;
+using Business.DependencyResolvers.Autofac;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//Autofac ile dependency and AOP desing
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host
+    .ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new AutoFacBusinessModule()));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -13,8 +20,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //autofac, ninject, castlewindsor,structermap,lightýnject,dryýnject -->Ioc Container
 //autofac -->AOP Bir metodun önünde sonunda kod yönetimini saðlar sunuyor
-builder.Services.AddSingleton<IProductService,ProductManager>(); //arka planda referans oluþtur
-builder.Services.AddSingleton<IProductDal,EfProductDal>(); //arka planda referans oluþtur
+//en iyisi postsharp
+//builder.Services.AddSingleton<IProductService,ProductManager>(); //arka planda referans oluþtur
+//builder.Services.AddSingleton<IProductDal,EfProductDal>(); //arka planda referans oluþtur
 
 var app = builder.Build();
 
