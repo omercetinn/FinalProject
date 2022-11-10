@@ -1,10 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.AutoFac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,16 +25,15 @@ namespace Business.Concrete
         {
             _productDal = productDal;
         }
-        //void özel bşr tip döndürmüyorum
+        //void özel bir tip döndürmüyorum
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
             //business codes
+            //validation code: girilen verini doğrulanması
 
-            if (product.ProductName.Length<2)
-            {
-                //magic strings
-                return new ErrorResult(Messages.ProductNameInvalid);
-            }
+            //ValidationTool.Validate(new ProductValidator(), product);
+
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }
@@ -40,11 +43,11 @@ namespace Business.Concrete
             //İş kodları
             //InMemoryProductDal ınMemoryProductDal = new InMemoryProductDal();
             //yetkisi var mı?
-            if (DateTime.Now.Hour==1)
+            if (DateTime.Now.Hour == 1)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductListed);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductListed);
         }
 
         public IDataResult<List<Product>> GetAllByCategoryId(int id)
@@ -72,7 +75,7 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<List<ProductDetailDto>>(Messages.MaintenanceTime);
             }
-            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails()) ;
+            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
         }
     }
 }
