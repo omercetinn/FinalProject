@@ -2,6 +2,7 @@
 
 namespace Core.Utilities.Interceptors
 {
+    //invovation: business method
     public abstract class MethodInterception : MethodInterceptionBaseAttribute //başlangıç ve bitiş için log, transaction vs AOP kolaylaştırılıyor
     {
         protected virtual void OnBefore(IInvocation invocation) { }
