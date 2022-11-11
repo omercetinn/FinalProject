@@ -30,6 +30,9 @@ namespace Business.Concrete
             _productDal = productDal;
             _categoryService = categoryService;
         }
+
+        //claim: kullanıcı
+        [SecuredOperation("admin,editor")]
         //void özel bir tip döndürmüyorum
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
