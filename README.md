@@ -6,4 +6,8 @@ This project for example linq
 
 - Validation alt yapısı
 
+- AOP
+
+-JWT(Json web Tokens)
+
 
