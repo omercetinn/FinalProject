@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
@@ -32,7 +33,7 @@ namespace Business.Concrete
         }
 
         //claim: kullanıcı
-        [SecuredOperation("admin,editor")]
+        [SecuredOperation("product.add,admin")]
         //void özel bir tip döndürmüyorum
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
