@@ -62,8 +62,8 @@ namespace Business.Concrete
 
         }
 
-        [CacheAspect] //key,value
-        [PerformanceAspect(5)] //5 saniye geçerse uyarı log atar
+        //[CacheAspect] //key,value
+        //[PerformanceAspect(5)] //5 saniye geçerse uyarı log atar
         public IDataResult<List<Product>> GetAll()
         {
             //İş kodları
