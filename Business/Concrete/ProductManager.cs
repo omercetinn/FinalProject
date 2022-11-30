@@ -3,6 +3,9 @@ using Business.BusinessAspects.Autofac;
 using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.AutoFac.Caching;
+using Core.Aspects.AutoFac.Performance;
+using Core.Aspects.AutoFac.Transaction;
 using Core.Aspects.AutoFac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
@@ -18,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Business.Concrete
 {
@@ -36,6 +40,7 @@ namespace Business.Concrete
         [SecuredOperation("product.add,admin")]
         //void özel bir tip döndürmüyorum
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")] //
         public IResult Add(Product product)
         {
             //business codes
@@ -58,6 +63,7 @@ namespace Business.Concrete
         }
 
         //[CacheAspect] //key,value
+        //[PerformanceAspect(5)] //5 saniye geçerse uyarı log atar
         public IDataResult<List<Product>> GetAll()
         {
             //İş kodları
@@ -79,6 +85,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
         }
         //istenen sadece tek bir şeyi döndürür mesela burada sadece istenen 
+
+        [CacheAspect]
         public IDataResult<Product> GetById(int productId)
         {
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
@@ -98,7 +106,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
         }
 
+        
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Product product)
         {
 
@@ -135,6 +145,21 @@ namespace Business.Concrete
             }
 
             return new SuccessResult();
+        }
+
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Product product)
+        {            
+            Add(product);
+            if (product.UnitPrice<10)
+            {
+                throw new Exception("");
+            }
+
+
+            Add(product);
+
+            return null;
         }
     }
 }
