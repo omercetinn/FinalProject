@@ -10,4 +10,6 @@ This project for example linq
 
 -JWT(Json web Tokens)
 
+-with Angular project
+
 
