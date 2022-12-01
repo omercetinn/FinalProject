@@ -25,6 +25,8 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             //Dependence chain
+
+            Thread.Sleep(5000);
             var result = _productService.GetAll();
             if (result.Success)
             {
