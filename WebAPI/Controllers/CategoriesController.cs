@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
         {
             //Dependence chain
 
-            Thread.Sleep(5000);
+            Thread.Sleep(1000);
             var result = _categoryService.GetAll();
             if (result.Success)
             {
