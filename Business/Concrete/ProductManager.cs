@@ -43,6 +43,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("IProductService.Get")] //
         public IResult Add(Product product)
         {
+
             //business codes
             //validation code: girilen verini doğrulanması
             //ValidationTool.Validate(new ProductValidator(), product);
